@@ -22,7 +22,7 @@ interface Args {
 export const command = "inspect";
 export const describe = "Inspect the state of the DApp";
 
-const DEFAULT_URL = "http://localhost:5005/inspect";
+const DEFAULT_URL = "http://localhost:8080/inspect";
 
 export const builder = (yargs: Argv) => {
     return yargs

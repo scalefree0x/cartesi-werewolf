@@ -5,10 +5,16 @@ import jsonpickle
 import requests
 from werewolf.model import Game
 
+
+# from werewolf.model import Game
+
 logging.basicConfig(level="INFO")
 logger = logging.getLogger(__name__)
 
-rollup_server = environ["ROLLUP_HTTP_SERVER_URL"]
+rollup_server = "http://localhost:8080/rollup"
+if "ROLLUP_HTTP_SERVER_URL" in environ:
+    rollup_server = environ["ROLLUP_HTTP_SERVER_URL"]
+
 logger.info(f"HTTP rollup_server url is {rollup_server}")
 
 
