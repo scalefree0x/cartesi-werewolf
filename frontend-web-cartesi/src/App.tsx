@@ -15,13 +15,13 @@ import injectedModule from "@web3-onboard/injected-wallets";
 import { init } from "@web3-onboard/react";
 import { useState } from "react";
 
-import { GraphQLProvider } from "./GraphQL";
-import { Notices } from "./Notices";
-import { Input } from "./Input";
-import { Inspect } from "./Inspect";
-import { Network } from "./Network";
-import { Vouchers } from "./Vouchers";
-import { Reports } from "./Reports";
+import { GraphQLProvider } from "./components/cartesi/GraphQL";
+import { Notices } from "./components/cartesi/Notices";
+import { Input } from "./components/cartesi/Input";
+import { Inspect } from "./components/cartesi/Inspect";
+import { Network } from "./components/cartesi/Network";
+import { Vouchers } from "./components/cartesi/Vouchers";
+import { Reports } from "./components/cartesi/Reports";
 import configFile from "./config.json";
 
 const config: any = configFile;
@@ -29,7 +29,7 @@ const config: any = configFile;
 const injected: any = injectedModule();
 init({
     wallets: [injected],
-    chains: Object.entries(config).map(([k, v]: [string, any], i) => ({id: k, token: v.token, label: v.label, rpcUrl: v.rpcUrl})),
+    chains: Object.entries(config).map(([k, v]: [string, any], i) => ({ id: k, token: v.token, label: v.label, rpcUrl: v.rpcUrl })),
     appMetadata: {
         name: "Cartesi Rollups Test DApp",
         icon: "<svg><svg/>",

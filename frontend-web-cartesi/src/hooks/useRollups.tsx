@@ -31,10 +31,10 @@ import {
     ERC1155SinglePortal__factory,
     ERC1155BatchPortal,
     ERC1155BatchPortal__factory
-} from "./generated/rollups";
+} from "../generated/rollups";
 import { ConnectedChain } from "@web3-onboard/core";
 
-import configFile from "./config.json";
+import configFile from "../config.json";
 import { JsonRpcSigner } from "@ethersproject/providers";
 
 const config: any = configFile;
@@ -61,35 +61,35 @@ export const useRollups = (dAddress: string): RollupsContracts | undefined => {
     useEffect(() => {
         const connect = async (
             chain: ConnectedChain
-            ): Promise<RollupsContracts> => {
+        ): Promise<RollupsContracts> => {
             const provider = new ethers.providers.Web3Provider(
                 connectedWallet.provider
             );
             const signer = provider.getSigner();
 
             let dappRelayAddress = "";
-            if(config[chain.id]?.DAppRelayAddress) {
+            if (config[chain.id]?.DAppRelayAddress) {
                 dappRelayAddress = config[chain.id].DAppRelayAddress;
             } else {
                 console.error(`No dapp relay address address defined for chain ${chain.id}`);
             }
 
             let inputBoxAddress = "";
-            if(config[chain.id]?.InputBoxAddress) {
+            if (config[chain.id]?.InputBoxAddress) {
                 inputBoxAddress = config[chain.id].InputBoxAddress;
             } else {
                 console.error(`No input box address address defined for chain ${chain.id}`);
             }
 
             let etherPortalAddress = "";
-            if(config[chain.id]?.EtherPortalAddress) {
+            if (config[chain.id]?.EtherPortalAddress) {
                 etherPortalAddress = config[chain.id].EtherPortalAddress;
             } else {
                 console.error(`No ether portal address address defined for chain ${chain.id}`);
             }
 
             let erc20PortalAddress = "";
-            if(config[chain.id]?.Erc20PortalAddress) {
+            if (config[chain.id]?.Erc20PortalAddress) {
                 erc20PortalAddress = config[chain.id].Erc20PortalAddress;
             } else {
                 console.error(`No erc20 portal address address defined for chain ${chain.id}`);
@@ -97,7 +97,7 @@ export const useRollups = (dAddress: string): RollupsContracts | undefined => {
             }
 
             let erc721PortalAddress = "";
-            if(config[chain.id]?.Erc721PortalAddress) {
+            if (config[chain.id]?.Erc721PortalAddress) {
                 erc721PortalAddress = config[chain.id].Erc721PortalAddress;
             } else {
                 console.error(`No erc721 portal address address defined for chain ${chain.id}`);
@@ -105,7 +105,7 @@ export const useRollups = (dAddress: string): RollupsContracts | undefined => {
             }
 
             let erc1155SinglePortalAddress = "";
-            if(config[chain.id]?.Erc1155SinglePortalAddress) {
+            if (config[chain.id]?.Erc1155SinglePortalAddress) {
                 erc1155SinglePortalAddress = config[chain.id].Erc1155SinglePortalAddress;
             } else {
                 console.error(`No erc1155 single portal address address defined for chain ${chain.id}`);
@@ -113,7 +113,7 @@ export const useRollups = (dAddress: string): RollupsContracts | undefined => {
             }
 
             let erc1155BatchPortalAddress = "";
-            if(config[chain.id]?.Erc1155BatchPortalAddress) {
+            if (config[chain.id]?.Erc1155BatchPortalAddress) {
                 erc1155BatchPortalAddress = config[chain.id].Erc1155BatchPortalAddress;
             } else {
                 console.error(`No erc1155 batch portal address address defined for chain ${chain.id}`);
@@ -127,7 +127,7 @@ export const useRollups = (dAddress: string): RollupsContracts | undefined => {
 
             // input contract
             const inputContract = InputBox__factory.connect(inputBoxAddress, signer);
-            
+
             // portals contracts
             const etherPortalContract = EtherPortal__factory.connect(etherPortalAddress, signer);
 

@@ -12,25 +12,25 @@
 
 import { ethers } from "ethers";
 import React from "react";
-import { useReportsQuery } from "./generated/graphql";
+import { useNoticesQuery } from "../../generated/graphql";
 
-type Report = {
+type Notice = {
     id: string;
     index: number;
     input: any, //{index: number; epoch: {index: number; }
     payload: string;
 };
 
-export const Reports: React.FC = () => {
-    const [result,reexecuteQuery] = useReportsQuery();
+export const Notices: React.FC = () => {
+    const [result, reexecuteQuery] = useNoticesQuery();
     const { data, fetching, error } = result;
 
     if (fetching) return <p>Loading...</p>;
     if (error) return <p>Oh no... {error.message}</p>;
 
-    if (!data || !data.reports) return <p>No reports</p>;
+    if (!data || !data.notices) return <p>No notices</p>;
 
-    const reports: Report[] = data.reports.edges.map((node: any) => {
+    const notices: Notice[] = data.notices.edges.map((node: any) => {
         const n = node.node;
         let inputPayload = n?.input.payload;
         if (inputPayload) {
@@ -56,7 +56,7 @@ export const Reports: React.FC = () => {
             id: `${n?.id}`,
             index: parseInt(n?.index),
             payload: `${payload}`,
-            input: n ? {index:n.input.index,payload: inputPayload} : {},
+            input: n ? { index: n.input.index, payload: inputPayload } : {},
         };
     }).sort((b: any, a: any) => {
         if (a.input.index === b.input.index) {
@@ -82,12 +82,12 @@ export const Reports: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {reports.length === 0 && (
+                    {notices.length === 0 && (
                         <tr>
-                            <td colSpan={4}>no reports</td>
+                            <td colSpan={4}>no notices</td>
                         </tr>
                     )}
-                    {reports.map((n: any) => (
+                    {notices.map((n: any) => (
                         <tr key={`${n.input.index}-${n.index}`}>
                             <td>{n.input.index}</td>
                             <td>{n.index}</td>

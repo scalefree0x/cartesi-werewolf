@@ -12,7 +12,7 @@
 
 import { FC } from "react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
-import configFile from "./config.json";
+import configFile from "../../config.json";
 
 const config: any = configFile;
 
@@ -42,7 +42,7 @@ export const Network: FC = () => {
                                 } else {
                                     alert("No deploy on this chain")
                                 }
-                                }
+                            }
                             }
                             value={connectedChain?.id}
                         >

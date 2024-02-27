@@ -12,12 +12,12 @@
 
 import React, { useState } from "react";
 import { ethers } from "ethers";
-import { useRollups } from "./useRollups";
+import { useRollups } from "../../hooks/useRollups";
 import { useWallets } from "@web3-onboard/react";
-import { IERC1155__factory, IERC20__factory, IERC721__factory } from "./generated/rollups";
+import { IERC1155__factory, IERC20__factory, IERC721__factory } from "../../generated/rollups";
 
 interface IInputPropos {
-    dappAddress: string 
+    dappAddress: string
 }
 
 export const Input: React.FC<IInputPropos> = (propos) => {
@@ -51,7 +51,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
         }
     };
 
-    const depositErc20ToPortal = async (token: string,amount: number) => {
+    const depositErc20ToPortal = async (token: string, amount: number) => {
         try {
             if (rollups && provider) {
                 const data = ethers.utils.toUtf8Bytes(`Deposited (${amount}) of ERC20 (${token}).`);
@@ -74,7 +74,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                     }
                 }
 
-                await rollups.erc20PortalContract.depositERC20Tokens(token,propos.dappAddress,ethers.utils.parseEther(`${amount}`),data);
+                await rollups.erc20PortalContract.depositERC20Tokens(token, propos.dappAddress, ethers.utils.parseEther(`${amount}`), data);
             }
         } catch (e) {
             console.log(`${e}`);
@@ -85,17 +85,17 @@ export const Input: React.FC<IInputPropos> = (propos) => {
         try {
             if (rollups && provider) {
                 const data = ethers.utils.toUtf8Bytes(`Deposited (${amount}) ether.`);
-                const txOverrides = {value: ethers.utils.parseEther(`${amount}`)}
+                const txOverrides = { value: ethers.utils.parseEther(`${amount}`) }
 
                 // const tx = await ...
-                rollups.etherPortalContract.depositEther(propos.dappAddress,data,txOverrides);
+                rollups.etherPortalContract.depositEther(propos.dappAddress, data, txOverrides);
             }
         } catch (e) {
             console.log(`${e}`);
         }
     };
 
-    const transferNftToPortal = async (contractAddress: string,nftid: number) => {
+    const transferNftToPortal = async (contractAddress: string, nftid: number) => {
         try {
             if (rollups && provider) {
                 const data = ethers.utils.toUtf8Bytes(`Deposited (${nftid}) of ERC721 (${contractAddress}).`);
@@ -120,7 +120,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                 }
 
                 // Transfer
-                rollups.erc721PortalContract.depositERC721Token(contractAddress,propos.dappAddress, nftid, "0x", data);
+                rollups.erc721PortalContract.depositERC721Token(contractAddress, propos.dappAddress, nftid, "0x", data);
             }
         } catch (e) {
             console.log(`${e}`);
@@ -140,10 +140,10 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                 const tokenContract = signer ? IERC1155__factory.connect(contractAddress, signer) : IERC1155__factory.connect(contractAddress, provider);
 
                 // query current approval
-                const currentApproval = await tokenContract.isApprovedForAll(signerAddress,erc1155SinglePortalAddress);
+                const currentApproval = await tokenContract.isApprovedForAll(signerAddress, erc1155SinglePortalAddress);
                 if (!currentApproval) {
                     // Allow portal to withdraw `amount` tokens from signer
-                    const tx = await tokenContract.setApprovalForAll(erc1155SinglePortalAddress,true);
+                    const tx = await tokenContract.setApprovalForAll(erc1155SinglePortalAddress, true);
                     const receipt = await tx.wait(1);
                     const event = (await tokenContract.queryFilter(tokenContract.filters.ApprovalForAll(), receipt.blockHash)).pop();
                     if (!event) {
@@ -152,7 +152,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                 }
 
                 // Transfer
-                rollups.erc1155SinglePortalContract.depositSingleERC1155Token(contractAddress,propos.dappAddress, id, amount, "0x", data);
+                rollups.erc1155SinglePortalContract.depositSingleERC1155Token(contractAddress, propos.dappAddress, id, amount, "0x", data);
             }
         } catch (e) {
             console.log(`${e}`);
@@ -172,10 +172,10 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                 const tokenContract = signer ? IERC1155__factory.connect(contractAddress, signer) : IERC1155__factory.connect(contractAddress, provider);
 
                 // query current approval
-                const currentApproval = await tokenContract.isApprovedForAll(signerAddress,erc1155BatchPortalAddress);
+                const currentApproval = await tokenContract.isApprovedForAll(signerAddress, erc1155BatchPortalAddress);
                 if (!currentApproval) {
                     // Allow portal to withdraw `amount` tokens from signer
-                    const tx = await tokenContract.setApprovalForAll(erc1155BatchPortalAddress,true);
+                    const tx = await tokenContract.setApprovalForAll(erc1155BatchPortalAddress, true);
                     const receipt = await tx.wait(1);
                     const event = (await tokenContract.queryFilter(tokenContract.filters.ApprovalForAll(), receipt.blockHash)).pop();
                     if (!event) {
@@ -184,7 +184,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                 }
 
                 // Transfer
-                rollups.erc1155BatchPortalContract.depositBatchERC1155Token(contractAddress,propos.dappAddress, ids, amounts, "0x", data);
+                rollups.erc1155BatchPortalContract.depositBatchERC1155Token(contractAddress, propos.dappAddress, ids, amounts, "0x", data);
             }
         } catch (e) {
             console.log(`${e}`);
@@ -198,8 +198,8 @@ export const Input: React.FC<IInputPropos> = (propos) => {
         const newAmounts = erc1155Amounts;
         newAmounts.push(erc1155Amount);
         setErc1155Amounts(newAmounts);
-        setErc1155IdsStr("["+erc1155Ids.join(',')+"]");
-        setErc1155AmountsStr("["+erc1155Amounts.join(',')+"]");
+        setErc1155IdsStr("[" + erc1155Ids.join(',') + "]");
+        setErc1155AmountsStr("[" + erc1155Amounts.join(',') + "]");
     };
 
     const Clear1155Batch = () => {
@@ -208,7 +208,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
         setErc1155Ids([]);
         setErc1155Amounts([]);
     };
-    
+
     const [input, setInput] = useState<string>("");
     const [hexInput, setHexInput] = useState<boolean>(false);
     const [erc20Amount, setErc20Amount] = useState<number>(0);
@@ -240,7 +240,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                 />
-                <input type="checkbox" checked={hexInput} onChange={(e) => setHexInput(!hexInput)}/><span>Raw Hex </span>
+                <input type="checkbox" checked={hexInput} onChange={(e) => setHexInput(!hexInput)} /><span>Raw Hex </span>
                 <button onClick={() => addInput(input)} disabled={!rollups}>
                     Send
                 </button>
@@ -270,7 +270,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                     value={erc20Amount}
                     onChange={(e) => setErc20Amount(Number(e.target.value))}
                 />
-                <button onClick={() => depositErc20ToPortal(erc20Token,erc20Amount)} disabled={!rollups}>
+                <button onClick={() => depositErc20ToPortal(erc20Token, erc20Amount)} disabled={!rollups}>
                     Deposit ERC20
                 </button>
                 <br /><br />
@@ -287,7 +287,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                     value={erc721Id}
                     onChange={(e) => setErc721Id(Number(e.target.value))}
                 />
-                <button onClick={() => transferNftToPortal(erc721,erc721Id)} disabled={!rollups}>
+                <button onClick={() => transferNftToPortal(erc721, erc721Id)} disabled={!rollups}>
                     Transfer NFT
                 </button>
                 <br /><br />
@@ -312,7 +312,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                 <button onClick={() => AddTo1155Batch()} disabled={!rollups}>
                     Add to Batch
                 </button>
-                <button onClick={() => transferErc1155SingleToPortal(erc1155,erc1155Id,erc1155Amount)} disabled={!rollups}>
+                <button onClick={() => transferErc1155SingleToPortal(erc1155, erc1155Id, erc1155Amount)} disabled={!rollups}>
                     Transfer Single 1155
                 </button>
                 <br />
@@ -321,7 +321,7 @@ export const Input: React.FC<IInputPropos> = (propos) => {
                 <button onClick={() => Clear1155Batch()} disabled={!rollups}>
                     Clear Batch
                 </button>
-                <button onClick={() => transferErc1155BatchToPortal(erc1155,erc1155Ids,erc1155Amounts)} disabled={!rollups}>
+                <button onClick={() => transferErc1155BatchToPortal(erc1155, erc1155Ids, erc1155Amounts)} disabled={!rollups}>
                     Transfer Batch 1155
                 </button>
             </div>
