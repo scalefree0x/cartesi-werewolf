@@ -23,6 +23,8 @@ import { Network } from "./components/cartesi/Network";
 import { Vouchers } from "./components/cartesi/Vouchers";
 import { Reports } from "./components/cartesi/Reports";
 import configFile from "./config.json";
+import Routes from "./router/Routes";
+import { werewolf_routes } from "./router/routes";
 
 const config: any = configFile;
 
@@ -41,32 +43,33 @@ init({
 });
 
 const App: FC = () => {
-    const [dappAddress, setDappAddress] = useState<string>("0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C");
+    // const [dappAddress, setDappAddress] = useState<string>("0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C");
 
     return (
-        <div>
-            <Network />
-            <GraphQLProvider>
-                <div>
-                    Dapp Address: <input
-                        type="text"
-                        value={dappAddress}
-                        onChange={(e) => setDappAddress(e.target.value)}
-                    />
-                    <br /><br />
-                </div>
-                <h2>Inspect</h2>
-                <Inspect />
-                <h2>Input</h2>
-                <Input dappAddress={dappAddress} />
-                <h2>Reports</h2>
-                <Reports />
-                <h2>Notices</h2>
-                <Notices />
-                <h2>Vouchers</h2>
-                <Vouchers dappAddress={dappAddress} />
-            </GraphQLProvider>
-        </div>
+        // <div>
+        //     <Network />
+        //     <GraphQLProvider>
+        //         <div>
+        //             Dapp Address: <input
+        //                 type="text"
+        //                 value={dappAddress}
+        //                 onChange={(e) => setDappAddress(e.target.value)}
+        //             />
+        //             <br /><br />
+        //         </div>
+        //         <h2>Inspect</h2>
+        //         <Inspect />
+        //         <h2>Input</h2>
+        //         <Input dappAddress={dappAddress} />
+        //         <h2>Reports</h2>
+        //         <Reports />
+        //         <h2>Notices</h2>
+        //         <Notices />
+        //         <h2>Vouchers</h2>
+        //         <Vouchers dappAddress={dappAddress} />
+        //     </GraphQLProvider>
+        // </div>
+        <Routes routes={werewolf_routes} />
     );
 };
 
