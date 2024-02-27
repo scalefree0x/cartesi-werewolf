@@ -1,4 +1,6 @@
-import { ReduxAction } from "../../types"
+import { ReduxAction } from "../../types";
+
+export const SET_SESSION = "SET_SESSION";
 
 const INITIAL_STATE = {
 
