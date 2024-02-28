@@ -13,19 +13,28 @@
 import { FC } from "react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import configFile from "../../config.json";
+// import { setSession } from "../../services";
+import { setSession } from "../../redux/actions";
+import { useDispatch } from "react-redux";
 
 const config: any = configFile;
 
 export const Network: FC = () => {
     const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
     const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
-
+    const dispatch = useDispatch();
     return (
         <div>
             {!wallet && <button className="btn btn-primary btn-outline rounded-lg w-48"
-                onClick={() =>
-                    connect()
-                }
+                onClick={async () => {
+                    const wallet_res = await connect();
+                    // something with the redux action is causing a failure
+                    // if (wallet_res) {
+                    //     dispatch(setSession(wallet_res));
+                    // } else {
+                    //     console.error('Failed to connect to wallet');
+                    // }
+                }}
             >
                 {connecting ? "connecting" : "connect"}
             </button>}

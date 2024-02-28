@@ -16,11 +16,15 @@ import reportWebVitals from "./reportWebVitals";
 import './styles/global.css';
 
 import { createRoot } from 'react-dom/client';
+import { Provider } from "react-redux";
+import store from "./redux/store";
 const container = document.getElementById('root');
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
 root.render(
     <React.StrictMode>
-        <App />
+        <Provider store={store}>
+            <App />
+        </Provider>
     </React.StrictMode>
 );
 
