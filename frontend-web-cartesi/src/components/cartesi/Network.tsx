@@ -10,12 +10,13 @@
 // License for the specific language governing permissions and limitations
 // under the License.
 
-import { FC } from "react";
-import { useConnectWallet, useSetChain } from "@web3-onboard/react";
-import configFile from "../../config.json";
-// import { setSession } from "../../services";
-import { setSession } from "../../redux/actions";
+import { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { setWallet } from "../../services"
+;
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
+
+import configFile from "../../config.json";
 
 const config: any = configFile;
 
@@ -23,17 +24,23 @@ export const Network: FC = () => {
     const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
     const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
     const dispatch = useDispatch();
+    useEffect(() => {
+        console.log('wallet', wallet);
+    }, [window.location.href]);
     return (
         <div>
             {!wallet && <button className="btn btn-primary btn-outline rounded-lg w-48"
                 onClick={async () => {
                     const wallet_res = await connect();
-                    // something with the redux action is causing a failure
-                    // if (wallet_res) {
-                    //     dispatch(setSession(wallet_res));
-                    // } else {
-                    //     console.error('Failed to connect to wallet');
-                    // }
+                    const accounts = wallet_res[0].accounts;
+                    if (wallet_res) {
+                        setWallet({
+                            address: accounts[0].address,
+                            balance: accounts[0].balance,
+                        });
+                    } else {
+                        alert('Failed to connect to wallet');
+                    }
                 }}
             >
                 {connecting ? "connecting" : "connect"}

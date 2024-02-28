@@ -1,6 +1,6 @@
 import store from "../redux/store";
-import { resetSession as resetSessionAction } from "../redux/actions";
+import { resetSession as resetWalletAction } from "../redux/actions";
 
 export const resetSession = () => {
-    store.dispatch(resetSessionAction());
+    store.dispatch(resetWalletAction());
 }

@@ -1,1 +1,2 @@
-export * from './setSession';
+export * from './resetSession';
+export * from './setWallet';

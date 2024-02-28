@@ -1,6 +1,7 @@
 import { ReduxAction } from "../../types";
 
 export const SET_WALLET = "SET_WALLET";
+export const CLEAR_WALLET = "CLEAR_WALLET";
 export const RESET_SESSION = "RESET_SESSION";
 
 const INITIAL_STATE = {
@@ -13,6 +14,11 @@ export default function session(state = INITIAL_STATE, action: ReduxAction) {
             return {
                 ...state,
                 wallet: action.payload
+            }
+        case CLEAR_WALLET:
+            return {
+                ...state,
+                wallet: INITIAL_STATE.wallet
             }
         case RESET_SESSION:
             return INITIAL_STATE;
