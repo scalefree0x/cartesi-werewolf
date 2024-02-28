@@ -15,17 +15,15 @@ import injectedModule from "@web3-onboard/injected-wallets";
 import { init } from "@web3-onboard/react";
 import { useState } from "react";
 
-import { GraphQLProvider } from "./components/cartesi/GraphQL";
-import { Notices } from "./components/cartesi/Notices";
-import { Input } from "./components/cartesi/Input";
-import { Inspect } from "./components/cartesi/Inspect";
-import { Network } from "./components/cartesi/Network";
-import { Vouchers } from "./components/cartesi/Vouchers";
-import { Reports } from "./components/cartesi/Reports";
-import configFile from "./config.json";
-import Routes from "./router/Routes";
-import { werewolf_routes } from "./router/routes";
-import { TopBar } from "./components/cartesi/top-bar";
+import { GraphQLProvider } from "./GraphQL";
+import { Notices } from "./Notices";
+import { Input } from "./Input";
+import { Inspect } from "./Inspect";
+import { Network } from "./Network";
+import { Vouchers } from "./Vouchers";
+import { Reports } from "./Reports";
+import configFile from "../../config.json";
+
 
 const config: any = configFile;
 
@@ -43,13 +41,34 @@ init({
     },
 });
 
-const App: FC = () => {
+const DappConnect: FC = () => {
+    const [dappAddress, setDappAddress] = useState<string>("0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C");
+
     return (
         <div>
-            <TopBar />
-            <Routes routes={werewolf_routes} />
+            <Network />
+            <GraphQLProvider>
+                <div>
+                    Dapp Address: <input
+                        type="text"
+                        value={dappAddress}
+                        onChange={(e) => setDappAddress(e.target.value)}
+                    />
+                    <br /><br />
+                </div>
+                <h2>Inspect</h2>
+                <Inspect />
+                <h2>Input</h2>
+                <Input dappAddress={dappAddress} />
+                <h2>Reports</h2>
+                <Reports />
+                <h2>Notices</h2>
+                <Notices />
+                <h2>Vouchers</h2>
+                <Vouchers dappAddress={dappAddress} />
+            </GraphQLProvider>
         </div>
     );
 };
 
-export default App;
+export default DappConnect;

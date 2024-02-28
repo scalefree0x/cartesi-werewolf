@@ -22,7 +22,7 @@ export const Network: FC = () => {
 
     return (
         <div>
-            {!wallet && <button
+            {!wallet && <button className="btn btn-primary btn-outline rounded-lg w-48"
                 onClick={() =>
                     connect()
                 }
@@ -31,11 +31,12 @@ export const Network: FC = () => {
             </button>}
             {wallet && (
                 <div>
-                    <label>Switch Chain</label>
+                    {/* <label className="badge">Switch Chain</label> */}
                     {settingChain ? (
                         <span>Switching chain...</span>
                     ) : (
                         <select
+                            className="select select-ghost select-sm"
                             onChange={({ target: { value } }) => {
                                 if (config[value] !== undefined) {
                                     setChain({ chainId: value })
@@ -55,7 +56,7 @@ export const Network: FC = () => {
                             })}
                         </select>
                     )}
-                    <button onClick={() => disconnect(wallet)}>
+                    <button className="btn btn-primary btn-outline rounded-lg w-48" onClick={() => disconnect(wallet)}>
                         Disconnect Wallet
                     </button>
                 </div>
