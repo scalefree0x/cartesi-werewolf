@@ -24,6 +24,12 @@ module.exports = function override(config) {
           Buffer: ["buffer", "Buffer"],
       }),
   ]
+  config.module.rules.push({
+    test: /\.m?js/,
+    resolve: {
+        fullySpecified: false
+    }
+})
   // console.log(config.resolve)
   // console.log(config.plugins)
   return config;
