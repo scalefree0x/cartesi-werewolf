@@ -6,8 +6,8 @@ const Routes = ({ routes }: { routes: RouteType[] }) => {
     return (
         <Router>
             <Switch>
-                {routes.map((route: RouteType) => (
-                    <Route path={route.path} element={<route.element />} />
+                {routes.map((route: RouteType, i: number) => (
+                    <Route key={i} path={route.path} element={<route.element />} />
                 ))}
             </Switch>
         </Router>

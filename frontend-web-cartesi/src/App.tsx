@@ -11,37 +11,9 @@
 // under the License.
 
 import { FC } from "react";
-import injectedModule from "@web3-onboard/injected-wallets";
-import { init } from "@web3-onboard/react";
-import { useState } from "react";
-
-import { GraphQLProvider } from "./components/cartesi/GraphQL";
-import { Notices } from "./components/cartesi/Notices";
-import { Input } from "./components/cartesi/Input";
-import { Inspect } from "./components/cartesi/Inspect";
-import { Network } from "./components/cartesi/Network";
-import { Vouchers } from "./components/cartesi/Vouchers";
-import { Reports } from "./components/cartesi/Reports";
-import configFile from "./config.json";
 import Routes from "./router/Routes";
 import { werewolf_routes } from "./router/routes";
 import { TopBar } from "./components/cartesi/top-bar";
-
-const config: any = configFile;
-
-const injected: any = injectedModule();
-init({
-    wallets: [injected],
-    chains: Object.entries(config).map(([k, v]: [string, any], i) => ({ id: k, token: v.token, label: v.label, rpcUrl: v.rpcUrl })),
-    appMetadata: {
-        name: "Cartesi Rollups Test DApp",
-        icon: "<svg><svg/>",
-        description: "Demo app for Cartesi Rollups",
-        recommendedInjectedWallets: [
-            { name: "MetaMask", url: "https://metamask.io" },
-        ],
-    },
-});
 
 const App: FC = () => {
     return (
