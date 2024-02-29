@@ -15,7 +15,7 @@ import { init } from "@web3-onboard/react";
 import injectedModule from "@web3-onboard/injected-wallets";
 
 import Routes from "./router/Routes";
-import { werewolf_routes } from "./router/routes";
+import { werewolf_routes } from "./router/werewolf-routes";
 
 import { TopBar } from "./components/cartesi/top-bar";
 
