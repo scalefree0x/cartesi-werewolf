@@ -142,6 +142,26 @@ When executing an example, it is possible to advance time in order to simulate t
 curl --data '{"id":1337,"jsonrpc":"2.0","method":"evm_increaseTime","params":[864010]}' http://localhost:8545
 ```
 
+### WebSocket Server
+
+To support a local WebSocket server cd in the the werewolf folder and run the server.py which uses the library [python-websocket-server](https://github.com/Pithikos/python-websocket-server/tree/master).
+
+```shell
+python3 server.py
+```
+
+The server shouldn't return anything until a connection is made. This can be done in Postman using there `WebSocket` protocol.
+
+```
+ws://localhost:9001
+```
+
+Establish a **Connection** and send a **Message** to interact with the server.
+
+#### TODO
+
+- Support reading JSON data on the WebSocket server
+
 ## Deploying
 
 Deploying a new Cartesi DApp to a blockchain requires creating a smart contract on that network, as well as running a validator node for the DApp.
@@ -265,8 +285,8 @@ In this build system, the developer needs to ensure that contents are compatible
 
 In summary, for this strategy the DApp needs to provide the following:
 
--   A Dockerfile producing content in `/opt/cartesi/dapp`. The Dockerfile should use [cartesi/toolchain](https://hub.docker.com/r/cartesi/toolchain) as its base image if it needs to cross-compile code to RISC-V
--   A `dapp.json` file specifying a list of files of interest from the `/opt/cartesi/dapp` directory, which should include `entrypoint.sh`
+- A Dockerfile producing content in `/opt/cartesi/dapp`. The Dockerfile should use [cartesi/toolchain](https://hub.docker.com/r/cartesi/toolchain) as its base image if it needs to cross-compile code to RISC-V
+- A `dapp.json` file specifying a list of files of interest from the `/opt/cartesi/dapp` directory, which should include `entrypoint.sh`
 
 This strategy makes sense if the DApp does not have many special requirements, and can mostly run using the resources already bundled in the standard root file-system. This is the case for the simple [Echo Python DApp](./echo-python/), for example.
 Using this system also makes sense if the developer is familiar with cross-compilation, because it is faster than the other more general-purpose [docker-riscv](#docker-riscv-using-risc-v-base-docker-images) strategy described below.
@@ -299,8 +319,8 @@ You may use `.dockerignore` to easily filter which files to add (e.g., to includ
 
 In summary, in this system the DApp needs to provide the following:
 
--   A Dockerfile based on an Ubuntu RISC-V image, whose final contents must include an executable file called `/opt/cartesi/dapp/entrypoint.sh`
--   Any necessary resources can be added inside the Dockerfile as desired. Package managers such as `apt-get` or `pip` can also be used to install dependencies
+- A Dockerfile based on an Ubuntu RISC-V image, whose final contents must include an executable file called `/opt/cartesi/dapp/entrypoint.sh`
+- Any necessary resources can be added inside the Dockerfile as desired. Package managers such as `apt-get` or `pip` can also be used to install dependencies
 
 This strategy is the best option for adding any arbitrary dependency to your DApp.
 However, keep in mind that performing build operations such as compiling binaries inside an emulated RISC-V image is slower than executing them on your host machine. As such, in specific situations it may still be useful to generate RISC-V binaries via cross-compilation and then add them to the final image, as in the [std-rootfs](#std-rootfs-using-a-standard-root-file-system) build system.
