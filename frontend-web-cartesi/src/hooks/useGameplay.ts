@@ -9,11 +9,11 @@ export const useGameplay = () => {
 
   const { players } = useSelector((s: any) => s.session);
 
-  const [day, setDay] = useState(0);
+  const [day_no, setDayNo] = useState(0);
   const [cycle, setCycle] = useState<"day" | "night">("day");
-  const [game, setGame] = useState<"staging" | "live" | "end">("staging");
+  const [game, setGame] = useState<"staging" | "in_progress" | "end">("staging");
   const [player_turn, setPlayerTurn] = useState(0);
-  const [special_roles, setSpecialRoles] = useState([Witch, Doctor, Seer, Drunk]);
+  const [special_roles, setSpecialRoles] = useState(["WITCH", "DOCTOR", 'SEER', 'DRUNK']);
 
   const initializeRoles = useCallback(() => {
     // we can initialize the game and assign roles
@@ -24,13 +24,13 @@ export const useGameplay = () => {
     const randomizeRole = (player: player, i: number) => {
       let role = null;
       if (i < 4 || i >= 8) {
-        role = new Peasant(player.public_key, player_turn);
+        role = "PEASANT"; // new Peasant(player.public_key, player_turn);
       }
-      else if (i === 4) role = new WereWolf(player.public_key, player_turn);
+      else if (i === 4) role = "WEREWOLF"; // new WereWolf(player.public_key, player_turn);
       else if (i > 4 && i < 8) {
         const index = i - 5;
-        const _class = special_roles[index];
-        role = new _class(player.public_key, player_turn);
+        role = special_roles[index];
+        // role =  //new _class(player.public_key, player_turn);
       }
       setPlayerTurn(() => i++);
       return role;
@@ -46,19 +46,21 @@ export const useGameplay = () => {
   }, [players]);
 
   useEffect(() => {
-    if (players.length > 5 && game === "staging") {
-      // begin a countdown before the game begins
-      let count = 10;
-      const intervalId = setInterval(() => {
-        console.log(count);
-        if (count === 0) {
-          clearInterval(intervalId);
-          initializeRoles();
-          setGame(() => "live");
-        }
-        count--;
-      }, 1000);
-    }
+    setTimeout(() => {
+      if (players.length > 5 && game === "staging") {
+        // begin a countdown before the game begins
+        let count = 10;
+        const intervalId = setInterval(() => {
+          console.log(count);
+          if (count === 0) {
+            clearInterval(intervalId);
+            initializeRoles();
+            setGame("in_progress");
+          }
+          count--;
+        }, 1000);
+      }
+    }, 1);
   }, [players, game]);
 
   /**
@@ -69,9 +71,9 @@ export const useGameplay = () => {
 
   return useMemo(() => ({
     cycle,
-    day,
+    day_no,
   }), [
     cycle,
-    day,
+    day_no,
   ]);
 }
