@@ -1,4 +1,4 @@
-import { Drunk } from "./Drunk";
+// import { Drunk } from "./Drunk";
 
 export class Peasant {
 
@@ -50,8 +50,5 @@ export class Peasant {
 
     wake = () => {
         this.immune = false;
-        if (this instanceof Drunk) {
-            this.filthy = false;
-        }
     }
 }

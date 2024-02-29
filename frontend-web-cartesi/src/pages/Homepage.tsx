@@ -9,15 +9,14 @@ export const Homepage = () => {
     const { wallet } = useSelector((s: any) => s.user);
     const { players } = useSelector((s: any) => s.session);
 
-    const validUser = useMemo(() => {
-        return Boolean(wallet?.address);
-    }, [wallet]);
+    const validUser = useMemo(() => Boolean(wallet?.address), [wallet]);
 
+    // persist pervious players
     const joinGame = useCallback(() => {
         setPlayers([
             ...players,
             {
-                publicKey: wallet.address,
+                public_key: wallet.address,
             },
         ]);
         navigate('/werewolf');
@@ -50,9 +49,7 @@ export const Homepage = () => {
                 Display current wallet address and balance.<br />
             </div>
             {validUser ? (
-                <button className='btn btn-outline btn-primary rounded-lg w-full' onClick={() => {
-                    joinGame();
-                }}>Go To Game</button>
+                <button className='btn btn-outline btn-primary rounded-lg w-full' onClick={joinGame}>Go To Game</button>
             ) : (
                 <></>
             )}

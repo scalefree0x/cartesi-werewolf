@@ -30,4 +30,9 @@ export class Drunk extends Peasant {
         }
     }
 
+    wake = () => {
+        this.immune = false;
+        this.filthy = false;
+    }
+
 }
