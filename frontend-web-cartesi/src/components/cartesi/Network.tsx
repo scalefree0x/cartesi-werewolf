@@ -24,22 +24,21 @@ export const Network: FC = () => {
     const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
     const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
     const dispatch = useDispatch();
-    useEffect(() => {
-        console.log('wallet', wallet);
-    }, [window.location.href]);
+    
     return (
         <div>
             {!wallet && <button className="btn btn-primary btn-outline rounded-lg w-48"
                 onClick={async () => {
                     const wallet_res = await connect();
-                    const accounts = wallet_res[0].accounts;
-                    if (wallet_res) {
+                    // capture and use the first account
+                    const accounts = wallet_res[0]?.accounts;
+                    if (accounts) {
                         setWallet({
                             address: accounts[0].address,
                             balance: accounts[0].balance,
                         });
                     } else {
-                        alert('Failed to connect to wallet');
+                        alert('Failed to connect to wallet and retrieve accounts');
                     }
                 }}
             >

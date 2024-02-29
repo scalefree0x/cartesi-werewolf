@@ -1,28 +1,31 @@
-import { ReduxAction } from "../../types";
+import { ReduxAction } from "../../types"
 
-export const SET_WALLET = "SET_WALLET";
-export const CLEAR_WALLET = "CLEAR_WALLET";
-export const RESET_SESSION = "RESET_SESSION";
+export const CLEAR_PLAYERS = "CLEAR_PLAYERS"
+export const SET_SESSION = "SET_SESSION";
+export const SET_PLAYERS = "SET_PLAYERS";
 
 const INITIAL_STATE = {
-    wallet: {}
+    players: [],
+    availableRoles: [],
 }
 
-export default function session(state = INITIAL_STATE, action: ReduxAction) {
+const session = (state=INITIAL_STATE, action: ReduxAction) => {
     switch (action.type) {
-        case SET_WALLET:
+        case CLEAR_PLAYERS: 
             return {
                 ...state,
-                wallet: action.payload
+                players: INITIAL_STATE.players
             }
-        case CLEAR_WALLET:
+        case SET_SESSION:
+            return action.payload;
+        case SET_PLAYERS:
             return {
                 ...state,
-                wallet: INITIAL_STATE.wallet
+                players: action.payload
             }
-        case RESET_SESSION:
-            return INITIAL_STATE;
         default:
             return state
     }
 }
+
+export default session;

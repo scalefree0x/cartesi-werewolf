@@ -1,6 +1,6 @@
 import React from "react";
-import store from "../redux/store";
-import { setWallet as setWalletAction } from "../redux/actions";
+import store from "../../redux/store";
+import { setWallet as setWalletAction } from "../../redux/actions";
 
 export const setWallet = (session: any) => {
     /**
