@@ -5,10 +5,10 @@ import { generateAndExportRSAKeyPair } from "../../../utils";
 
 export const addNetPlayer = async (e: any) => {
     const { publicKey } = generateAndExportRSAKeyPair()
-    return post(publicKey).then((res) => {
-        console.log('res', res);
-        const state = inspect("");
-        console.log('app state post player add');
+    return post(publicKey).then(async (res) => {
+        console.log('post request response', res);
+        const state = await inspect("");
+        console.log('app state post player add', state);
         console.log('state', state);
         return state;
     });

@@ -15,7 +15,8 @@ export const Board = () => {
   const { wallet } = useSelector((s: any) => s.user);
 
   const you = useCallback((player: any) => {
-    if (wallet.address === player.public_key && player.role) return <>*<img style={image_card} src={`${player?.role?.toLowerCase()}.png`} alt="image" /></>;
+    if (wallet.address === player.public_key && player.role) return <>(You)<img style={image_card} src={`${player?.role?.toLowerCase()}.png`} alt="image" /></>;
+    else if (wallet.address === player.public_key && !player.role) return <>(You)<img style={image_card} src="villager.png" alt="image" /></>
     else return <img style={image_card} src="villager.png" alt="image" />
   }, [wallet]);
 
