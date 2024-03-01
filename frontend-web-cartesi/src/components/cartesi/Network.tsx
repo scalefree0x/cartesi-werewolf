@@ -12,8 +12,7 @@
 
 import { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setWallet } from "../../services"
-;
+import { setWallet } from "../../services";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 
 import configFile from "../../config.json";
@@ -24,7 +23,7 @@ export const Network: FC = () => {
     const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
     const [{ chains, connectedChain, settingChain }, setChain] = useSetChain();
     const dispatch = useDispatch();
-    
+
     return (
         <div>
             {!wallet && <button className="btn btn-primary btn-outline rounded-lg w-48"

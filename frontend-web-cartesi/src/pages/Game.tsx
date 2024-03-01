@@ -8,7 +8,7 @@ export const Game = () => {
 
     return (
         <div className='w-full'>
-            <div className='flex justify-center'>
+            <div className='flex justify-center' style={{height: '80vh'}}>
                 <Board />
             </div>
             <div>
