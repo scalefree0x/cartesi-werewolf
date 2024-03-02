@@ -29,6 +29,7 @@ export const Network: FC = () => {
             {!wallet && <button className="btn btn-primary btn-outline rounded-lg w-48"
                 onClick={async () => {
                     const wallet_res = await connect();
+                    // console.log('wallet_res', wallet_res);
                     // capture and use the first account
                     const accounts = wallet_res[0]?.accounts;
                     if (accounts) {

@@ -7,12 +7,14 @@ import json
 
 NUMBER_OF_PLAYER = 6
 
-player_ids = ["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266".upper(),
-              "0x70997970C51812dc3A010C7d01b50e0d17dc79C8".upper(),
-              "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC".upper(),
-              "0x90F79bf6EB2c4f870365E785982E1f101E93b906".upper(),
-              "0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65".upper(),
-              "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc".upper()]
+player_ids = [
+    "0xd003f96523847D128956fB85f3d9BD011f14F4bc".upper(),
+    "0xD9050051EE3363e5Ed2591b9F340ce60182Bd059".upper(),
+    "0xfd5a9267da950327c1e5556d2f6De3Ec6a482dcC".upper(),
+    "0x560cAf9471a7eBeeD69e733Cf220eB1Df57D09Bd".upper(),
+    "0x706f17D480759bE6FD91dFe8bb98e4E16eE8Fa5D".upper(),
+    "0xf4e676C749eFc281b59976BF307dea4A6287FB39".upper()
+]
 
 
 def main(player_index):

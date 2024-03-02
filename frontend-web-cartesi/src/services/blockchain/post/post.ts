@@ -11,25 +11,15 @@ const INPUTBOX_ADDRESS = "0x59b22D57D4f067708AB0c00552767405926dc768";
 const HARDHAT_DEFAULT_MNEMONIC = "test test test test test test test test test test test junk";
 const HARDHAT_LOCALHOST_RPC_URL = "http://localhost:8545";
 
-// temporary, we may want to extract from user_input
-const accountIndex = 0;
+// temporary, we may want to extract from rsa_public_key
 
-const options = {
-    autoClose: 6000,
-    type: "INFO",
-    hideProgressBar: false,
-    position: "top-left",
-    pauseOnHover: true,
-    progress: 0.2
-    // and so on ...
-};
+export const post = async (rsa_public_key: string, wallet_public_key: string) => {
 
-export const post = async (user_input: string) => {
     // Start a connection
     const provider = new JsonRpcProvider(HARDHAT_LOCALHOST_RPC_URL);
     const signer = ethers.Wallet.fromMnemonic(
         HARDHAT_DEFAULT_MNEMONIC,
-        `m/44'/60'/0'/0/${accountIndex}`
+        `m/44'/60'/0'/0/0`
     ).connect(provider);
 
     // Instantiate the InputBox contract
@@ -39,9 +29,9 @@ export const post = async (user_input: string) => {
     );
 
     // Encode the input
-    const inputBytes = ethers.utils.isBytesLike(user_input)
-        ? user_input
-        : ethers.utils.toUtf8Bytes(user_input);
+    const inputBytes = ethers.utils.isBytesLike(rsa_public_key)
+        ? rsa_public_key
+        : ethers.utils.toUtf8Bytes(rsa_public_key);
 
     // Send the transaction
     const tx = await inputBox.addInput(DAPP_ADDRESS, inputBytes);
@@ -58,6 +48,5 @@ export const post = async (user_input: string) => {
 
     // update these to toast notifications
     toast(`Transaction Confirmed: Input added => index: ${event?.args?.inputIndex}`,);
-    console.log(`Input added => index: ${event?.args?.inputIndex} `);
     return event;
 }

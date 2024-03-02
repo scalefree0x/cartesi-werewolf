@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { truncatePublicKey } from './assets';
 import { ToastContainer } from 'react-toastify';
+import { usePlayerAi } from '../../hooks/usePlayerAi';
 
 const image_card = {
   height: '10rem',
@@ -13,6 +14,8 @@ export const Board = () => {
 
   const { players, dapp_state } = useSelector((s: any) => s.session);
   const { wallet } = useSelector((s: any) => s.user);
+  const [ai_player_input, setAiPlayerInput] = React.useState(0);
+  const { initializeAiPlayers } = usePlayerAi();
 
   const you = useCallback((player: any) => {
     if (wallet.address === player.public_key && player.role) return <>(You)<img style={image_card} src={`${player?.role?.toLowerCase()}.png`} alt="image" /></>;
@@ -23,6 +26,7 @@ export const Board = () => {
   const playerCount = useMemo(() => players.length, [players]);
 
   const calculateGridPlacement = (index: number) => {
+
     const gridPositions: any = {
       1: 'top',
       2: 'top-middle',
@@ -78,6 +82,10 @@ export const Board = () => {
             {slot.position + 1} {truncatePublicKey(slot.player.public_key)} {you(slot.player)}
           </div>
         ))}
+      </div>
+      <div className='flex'>
+        <input onChange={(e: any) => setAiPlayerInput(e.target.value)} className='w-40 input input-secondary' type='number' />
+        <button className='btn btn-secondary btn-outline rounded-lg w-40' onClick={() => initializeAiPlayers(ai_player_input)}>Add AI</button>
       </div>
     </div>
   )

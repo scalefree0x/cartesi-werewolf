@@ -19,7 +19,7 @@ export const ChatBox = () => {
     const toggleChat = useCallback(() => setMinimize(() => !minimize), [setMinimize, minimize]);
 
     return (
-        <div className={`absolute bottom-0 right-0 w-4/12 ${minimize ? 'h-16' : 'h-60'} border rounded-md`}>
+        <div className={`absolute bottom-0 right-0 w-4/12 ${minimize ? 'h-16' : 'h-60'} border rounded-md z-10`}>
             <div className="navbar bg-base-100 border rounded-md">
                 <div className="flex-1">
                     <button onClick={toggleChat} className="btn btn-ghost text-xl cursor-pointer">{display}</button>
