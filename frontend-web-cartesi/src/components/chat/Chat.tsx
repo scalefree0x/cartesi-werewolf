@@ -1,6 +1,16 @@
 import React from 'react'
 
 export const Chat = () => {
+    // TODO
+    // POST TO WEBSOCKETS
+
+    // Connect WEBSOCKETS
+
+    // If a new websocket gets setup.
+    // Connect Wallet
+    // Connect to Socket
+    // Append message 
+
     /**
      * Will need to Connect to the websockets delivering messages and sending messages
      */
