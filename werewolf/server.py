@@ -16,6 +16,8 @@ def message_received(client, server, message):
 	if len(message) > 200:
 		message = message[:200]+'..'
 	print("Client(%d) said: %s" % (client['id'], message))
+	# Send message to all clients.
+	server.send_message_to_all("%d | %s" % (client['id'], message))
 
 
 PORT=9001

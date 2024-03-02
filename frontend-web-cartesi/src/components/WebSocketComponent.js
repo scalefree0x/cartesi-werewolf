@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const WebSocketComponent = () => {
+const WebSocketComponent = (onMessageReceived) => {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
@@ -16,12 +16,19 @@ const WebSocketComponent = () => {
         // Event listener when WebSocket connection is open
         newSocket.onopen = () => {
             // Send additional data after connection is established
-            newSocket.send(JSON.stringify(data));
+            console.log("WebSocket Opened")
         };
 
         // Event listener when WebSocket receives a message
         newSocket.onmessage = (event) => {
             console.log('Received message:', event.data);
+            // Parase message data.
+            console.log(event.data.split("|"));
+            var messageData = event.data.split("|");
+            var clientId = messageData[0];
+            var clientMessage = messageData[1];
+            // Call the callback function with the received message
+            onMessageReceived(event.data);
             // Handle incoming messages from the WebSocket server
         };
 
