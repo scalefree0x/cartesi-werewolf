@@ -1,4 +1,5 @@
-import { SET_DAPP_STATE, SET_PLAYERS, SET_SESSION } from "./reducers";
+import { SET_DAPP_STATE, SET_PLAYERS, SET_SESSION, UPDATE_PLAYER } from "./reducers";
+import { Player } from "../../types";
 
 export const setDappState = (payload: any) => ({
     type: SET_DAPP_STATE,
@@ -14,3 +15,8 @@ export const setSession = (payload: any) => ({
     type: SET_SESSION,
     payload: payload
 });
+
+export const updatePlayer = (payload: Player) => ({
+    type: UPDATE_PLAYER,
+    payload: payload
+})

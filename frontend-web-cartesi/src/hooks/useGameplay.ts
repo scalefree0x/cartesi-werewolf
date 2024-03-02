@@ -1,29 +1,37 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { inspect, setDappState, setPlayers } from '../services';
+import { inspect, setCharacter, setDappState } from '../services';
 
 import { Player } from '../types';
-// import { useRoleInterface } from './useRoleInterface';
 
 export const useGameplay = () => {
 
   const { wallet } = useSelector((s: any) => s.user);
-  const { players, dapp_state } = useSelector((s: any) => s.session);
-
-  const [day_no, setDayNo] = useState(0);
-  const [cycle, setCycle] = useState<"day" | "night">("day");
-  const [game, setGame] = useState<"staging" | "in_progress" | "end">("staging");
-  const [player_turn, setPlayerTurn] = useState(0);
-  const [special_roles, setSpecialRoles] = useState(["WITCH", "DOCTOR", 'SEER', 'DRUNK']);
-
-  // const { player } = useRoleInterface();
+  const { dapp_state } = useSelector((s: any) => s.session);
+  const queue = useSelector((s: any) => s.queue);
 
   // establish a read "stream" for inspections
   useEffect(() => {
     const intervalId = setInterval(() => {
       // constantly obtain and update the redux app state
-      inspect({ url: 'http://localhost:8080/inspect', payload: "" }).then(res => {
-        setDappState(res);
+      inspect({ url: 'http://localhost:8080/inspect', payload: "" }).then((_dapp_state: any) => {
+        /**
+         * Verify redux and anvil concurrency
+         */
+        const dapp_player_keys = Object.keys(_dapp_state?._players ? _dapp_state._players : {});
+        // checks the current player to see if they were not initialized
+        /* 
+         * if we have 1 more dapp player key more than players 
+          and the current user's waller isn't among the players, 
+          and we are clear from any queued tasks
+          map the newest dapp player key to the player
+         */
+        if (dapp_player_keys.length && wallet.character === undefined && !Object.keys(queue).length
+        ) {
+          // add the newest res_players key to the character key of players
+          setCharacter(dapp_player_keys.pop());
+        }
+        setDappState(_dapp_state);
       })
     }, 5000);
 
@@ -31,7 +39,8 @@ export const useGameplay = () => {
     return () => {
       clearInterval(intervalId);
     }
-  }, []);
+  }, [wallet, queue]);
+
 
   useEffect(() => {
     /**
@@ -42,61 +51,36 @@ export const useGameplay = () => {
     // establish the network
     // establish rsa newkeys
     // establish the public key to join the game!
+    if (dapp_state.moderator) {
+      // const mod = players.find((player: Player) => player.public_key === dapp_state.moderator);
+      /**
+       * once we have the mod, we need to update the state of redux player with moderator bool
+       * 
+       * moderator goes first,
+       * starts the game
+       * 
+       */
+      // initialize the WereWolf
+      // random select between 0 and 5
+      // exclude moderator index from random select
+      // index the store with the random number that's not moderator and give werewolf: true
+
+    }
 
     // moderator?
 
     // randomly assign roles
-  }, [players]);
+  }, []);
 
-  // backend will do this...
-  // const initializeRoles = useCallback(() => {
-  //   // we can initialize the game and assign roles
-  //   /**
-  //    * Assigning roles should always include 
-  //    * 1 WereWolf and 3 Peasants min, the rest are arbitrary
-  //    * not really random
-  //    */
-  //   const randomizeRole = (player: Player, i: number) => {
-  //     let role = null;
-  //     if (i < 3 || i >= 8) {
-  //       role = "PEASANT"; // new Peasant(player.public_key, player_turn);
-  //     }
-  //     else if (i === 3) role = "WEREWOLF"; // new WereWolf(player.public_key, player_turn);
-  //     else if (i > 3 && i < 7) {
-  //       const index = i - 5;
-  //       role = special_roles[index];
-  //       // role =  //new _class(player.public_key, player_turn);
-  //     }
-  //     setPlayerTurn(() => i++);
-  //     return role;
-  //   }
 
   //   setPlayers(
   //     // iterate over the players and in a sudo randomized manner assign initialized roles
   //     players.map((player: Player, i: number) => ({
   //       ...player,
-  //       role: randomizeRole(player, i)
+  //       role: ???
   //     }))
   //   )
   // }, [players]);
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (players.length > 5 && game === "staging") {
-  //       // begin a countdown before the game begins
-  //       let count = 10;
-  //       const intervalId = setInterval(() => {
-  //         console.log(count);
-  //         if (count === 0) {
-  //           initializeRoles();
-  //           setGame(() => "in_progress");
-  //           clearInterval(intervalId);
-  //         }
-  //         count--;
-  //       }, 1000);
-  //     }
-  //   }, 1000);
-  // }, [players, game]);
 
   /**
    * Day/Night cycles offer different options for different player types
@@ -105,10 +89,8 @@ export const useGameplay = () => {
    */
 
   return useMemo(() => ({
-    cycle,
-    day_no,
+
   }), [
-    cycle,
-    day_no,
+
   ]);
 }

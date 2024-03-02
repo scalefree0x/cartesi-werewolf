@@ -1,4 +1,9 @@
-import { CLEAR_WALLET, RESET_USER, SET_WALLET } from "./reducers";
+import { CLEAR_WALLET, SET_CHARACTER, RESET_USER, SET_WALLET } from "./reducers";
+
+export const setCharacter = (payload?: string ) => ({
+    type: SET_CHARACTER,
+    payload: payload
+});
 
 export const clearWaller = () => ({
     type: CLEAR_WALLET

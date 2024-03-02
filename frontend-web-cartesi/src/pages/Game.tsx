@@ -4,7 +4,7 @@ import { Board, ChatBox } from '../components';
 
 export const Game = () => {
 
-    const { cycle, day_no } = useGameplay();
+    const {  } = useGameplay();
 
     return (
         <div className='w-full'>

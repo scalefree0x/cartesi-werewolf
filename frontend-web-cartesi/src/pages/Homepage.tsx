@@ -1,34 +1,32 @@
 import React, { useCallback, useMemo } from 'react';
 import { useRouter } from '../hooks';
 import { useSelector } from 'react-redux';
-import { addNetPlayer, inspect, post, setPlayers } from '../services';
+import { addNetPlayer, inspect, popFromQueue, post, pushToQueue, setPlayers } from '../services';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export const Homepage = () => {
 
     const { location, navigate, params } = useRouter();
-    
+
     const { wallet } = useSelector((s: any) => s.user);
-    const { players } = useSelector((s: any) => s.session);
+    // const { dapp_state } = useSelector((s: any) => s.session);
 
     const validUser = useMemo(() => Boolean(wallet?.address), [wallet]);
+    // const player_keys = useMemo(() => Object.keys(dapp_state?._players ? dapp_state._players : {}), [dapp_state]);
 
     // persist pervious players
-    const joinGame = useCallback((e: any) => {
-        const player = {
-            public_key: wallet.address, role: null
-        };
-        // const state = addNetPlayer(players.length);
-        navigate('/werewolf');
-        /**
-         * What state do I need from adding the new player?
-         * Where can I get the role from?
-         * What information should I keep in parallel?
-         */
-        // console.log('state', state);
-        // setPlayers([...players, player]);
-    }, [setPlayers, players, wallet]);
+    const joinGame = useCallback(() => {
+        inspect({ url: 'http://localhost:8080/inspect', payload: "" }).then(dapp_state => {
+            console.log('NEW_CHARACTER dapp_state', dapp_state);
+            const player_keys = Object.keys(dapp_state?._players ? dapp_state._players : {});
+            navigate('/werewolf');
+            pushToQueue("addNetPlayer");
+            addNetPlayer(player_keys.length).then(() => {
+                popFromQueue();
+            })
+        })
+    }, []);
 
     /**
      * We may want to have the Wallet connection keep the user on just this page.

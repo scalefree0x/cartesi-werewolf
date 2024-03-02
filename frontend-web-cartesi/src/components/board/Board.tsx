@@ -12,18 +12,19 @@ const image_card = {
 
 export const Board = () => {
 
-  const { players, dapp_state } = useSelector((s: any) => s.session);
+  const { dapp_state } = useSelector((s: any) => s.session);
   const { wallet } = useSelector((s: any) => s.user);
   const [ai_player_input, setAiPlayerInput] = React.useState(0);
   const { initializeAiPlayers } = usePlayerAi();
 
   const you = useCallback((player: any) => {
-    if (wallet.address === player.public_key && player.role) return <>(You)<img style={image_card} src={`${player?.role?.toLowerCase()}.png`} alt="image" /></>;
-    else if (wallet.address === player.public_key && !player.role) return <>(You)<img style={image_card} src="villager.png" alt="image" /></>
+    if (wallet.character === player && player.role) return <>(You)<img style={image_card} src={`${player?.role?.toLowerCase()}.png`} alt="image" /></>;
+    else if (wallet.character === player && !player.role) return <>(You)<img style={image_card} src="villager.png" alt="image" /></>
     else return <img style={image_card} src="villager.png" alt="image" />
   }, [wallet]);
 
-  const playerCount = useMemo(() => players.length, [players]);
+  const playerKeys = useMemo(() => Object.keys(dapp_state?._players ? dapp_state._players : {}), [dapp_state]);
+  const playerCount = useMemo(() => playerKeys.length, [playerKeys]);
 
   const calculateGridPlacement = (index: number) => {
 
@@ -63,11 +64,13 @@ export const Board = () => {
     for (let i = 0; i < playerCount; i++) {
       indices.push({
         position: i,
-        player: players[i]
+        player: playerKeys[i]
       });
     }
+    console.log('indicies', indices);
     return indices;
   }, [playerCount]);
+
 
   return (
     <div className='grid w-full h-full'>
@@ -79,7 +82,7 @@ export const Board = () => {
             className={`p-4 border border-gray-300 rounded-md ${calculateGridPlacement(slot.position + 1)
               }`}
           >
-            {slot.position + 1} {truncatePublicKey(slot.player.public_key)} {you(slot.player)}
+            {slot.position + 1} {truncatePublicKey(slot.player)} {you(slot.player)}
           </div>
         ))}
       </div>
