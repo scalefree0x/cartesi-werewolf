@@ -86,10 +86,10 @@ export const Board = () => {
           </div>
         ))}
       </div>
-      <div className='flex'>
+      {/* <div className='flex'>
         <input onChange={(e: any) => setAiPlayerInput(e.target.value)} className='w-40 input input-secondary' type='number' />
         <button className='btn btn-secondary btn-outline rounded-lg w-40' onClick={() => initializeAiPlayers(ai_player_input)}>Add AI</button>
-      </div>
+      </div> */}
     </div>
   )
 }
