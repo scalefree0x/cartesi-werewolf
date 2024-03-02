@@ -2,6 +2,7 @@ import { JsonRpcProvider } from "@ethersproject/providers";
 import { ethers } from "ethers";
 import { InputBox__factory } from "@cartesi/rollups";
 import { toast } from "react-toastify";
+import { generateAndExportRSAKeyPair } from "../../../utils";
 
 // OBS: change Echo DApp address as appropriate
 const DAPP_ADDRESS = "0x70ac08179605AF2D9e75782b8DEcDD3c22aA4D0C";
@@ -49,4 +50,11 @@ export const post = async (rsa_public_key: string, addressIndex: number) => {
     // update these to toast notifications
     toast(`Transaction Confirmed: Input added => index: ${event?.args?.inputIndex}`,);
     return event;
+}
+
+export const sendPublicKey = (player_index: number) => {
+    const { publicKey, privateKey } = generateAndExportRSAKeyPair();
+    const publicKeyHex = publicKey.exportKey('pkcs1-public-pem').toString('hex');
+    post(publicKeyHex, player_index);
+    return privateKey;
 }

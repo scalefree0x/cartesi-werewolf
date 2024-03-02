@@ -10,6 +10,15 @@ export type Route = {
     element: () => JSX.Element
 }
 
-export type Role = Doctor | Drunk | Peasant | Seer | WereWolf | Witch
+export type Role = Doctor | Drunk | Peasant | Seer | WereWolf | Witch | "Doctor" | "Drunk" | "Peasant" | "Seer" | "WereWolf" | "Witch"
 
-export type Player = { public_key: string, role: Role };
+export type Player = {
+    public_key: string,
+    role?: Role,
+    character?: string,
+    alive?: boolean,
+    can_be_voted?: boolean,
+    has_voted?: boolean,
+    has_moved?: boolean,
+    votes_got?: boolean
+};

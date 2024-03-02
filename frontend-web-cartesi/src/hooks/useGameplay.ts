@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { inspect, setCharacter, setDappState } from '../services';
-
-import { Player } from '../types';
+import { bufferToHex, inspect, post, rsaDecrypt, rsaEncrypt, setCharacter, setDappState } from '../services';
 
 export const useGameplay = () => {
 
@@ -26,7 +24,7 @@ export const useGameplay = () => {
           and we are clear from any queued tasks
           map the newest dapp player key to the player
          */
-        if (dapp_player_keys.length && wallet.character === undefined && !Object.keys(queue).length
+        if (dapp_player_keys.length && wallet.character === undefined && !queue.length
         ) {
           // add the newest res_players key to the character key of players
           setCharacter(dapp_player_keys.pop());
@@ -43,6 +41,8 @@ export const useGameplay = () => {
 
 
   useEffect(() => {
+    const player_address = wallet.character;
+    const player_index = Object.keys(dapp_state._players).findIndex((key) => key === player_address);
     /**
      * Get Player from players list using the wallet address
      * 
@@ -52,25 +52,41 @@ export const useGameplay = () => {
     // establish rsa newkeys
     // establish the public key to join the game!
     if (dapp_state.moderator) {
-      // const mod = players.find((player: Player) => player.public_key === dapp_state.moderator);
-      /**
-       * once we have the mod, we need to update the state of redux player with moderator bool
-       * 
-       * moderator goes first,
-       * starts the game
-       * 
-       */
-      // initialize the WereWolf
-      // random select between 0 and 5
-      // exclude moderator index from random select
-      // index the store with the random number that's not moderator and give werewolf: true
+      const list_of_all = Object.keys(dapp_state._players);
+      const list_of_others = Object.keys(dapp_state._players);
+      const index_of_moderator = list_of_others.indexOf(dapp_state._moderator);
+      list_of_others.splice(index_of_moderator, 1);
+
+      const werewolf_index = Math.floor(Math.random() * (list_of_others.length - 0 + 1)) + 0;
+      const werewolf_key = list_of_others[werewolf_index];
+
+      const encrypted_roles: any = {};
+      for (let i = 0; i < list_of_all.length; i++) {
+        const player = list_of_all[i];
+        if (player == dapp_state._moderator) {
+          continue;
+        }
+        else if (player === werewolf_key) {
+          encrypted_roles[player] = rsaEncrypt("WEREWOLF", werewolf_key);
+        }
+        else {
+          encrypted_roles[player] = rsaEncrypt("VILLAGER", werewolf_key);
+        }
+      }
+
+      const stringified_encrypted_roles = JSON.stringify(encrypted_roles);
+      post(bufferToHex(stringified_encrypted_roles), index_of_moderator);
+
+    } else {
+      const encrypted_role = dapp_state._players[player_address].encrypted_role;
+      const role = rsaDecrypt(encrypted_role, privateKey)
 
     }
 
     // moderator?
 
     // randomly assign roles
-  }, []);
+  }, [dapp_state, wallet]);
 
 
   //   setPlayers(
