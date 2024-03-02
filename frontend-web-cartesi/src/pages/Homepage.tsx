@@ -19,15 +19,15 @@ export const Homepage = () => {
         const player = {
             public_key: wallet.address, role: null
         };
-        const state = addNetPlayer(players.length);
+        // const state = addNetPlayer(players.length);
         navigate('/werewolf');
         /**
          * What state do I need from adding the new player?
          * Where can I get the role from?
          * What information should I keep in parallel?
          */
-        console.log('state', state);
-        setPlayers([...players, player]);
+        // console.log('state', state);
+        // setPlayers([...players, player]);
     }, [setPlayers, players, wallet]);
 
     /**

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux';
+import {toast} from 'react-toastify';
 import { addNetPlayer, setPlayers } from '../services';
 
 export const usePlayerAi = () => {
@@ -19,24 +20,22 @@ export const usePlayerAi = () => {
     ]);
 
     const initializeAiPlayers = useCallback(async (n: number) => {
-        if (ai_players.length === 0) {
-            console.warn('no more stock keys to add!')
-            return
+        if(n > 5) {
+            toast("Out of index range for ai players! 0-5 only!");
+            return;
         }
-        if (n > ai_players.length - 1) n = ai_players.length - 1;
-        addNetPlayer(ai_players[n].public_key).then((state) => {
+        addNetPlayer(n).then((state) => {
             console.log('addNetPlayer', state);
             setPlayers([
                 ...players,
                 ai_players[n]
             ])
         });
-        // setAiPlayers(() => [...ai_players.slice(1)]);
-    }, [ai_players, setAiPlayers]);
+    }, [players]);
 
     useEffect(() => {
-        console.log('ai_players', ai_players);
-    }, [ai_players]);
+        console.log('players', players);
+    }, [players]);
 
     return useMemo(() => ({
         initializeAiPlayers

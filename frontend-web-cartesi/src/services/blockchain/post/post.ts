@@ -13,13 +13,13 @@ const HARDHAT_LOCALHOST_RPC_URL = "http://localhost:8545";
 
 // temporary, we may want to extract from rsa_public_key
 
-export const post = async (rsa_public_key: string, wallet_public_key: string) => {
+export const post = async (rsa_public_key: string, addressIndex: number) => {
 
     // Start a connection
     const provider = new JsonRpcProvider(HARDHAT_LOCALHOST_RPC_URL);
     const signer = ethers.Wallet.fromMnemonic(
         HARDHAT_DEFAULT_MNEMONIC,
-        `m/44'/60'/0'/0/0`
+        `m/44'/60'/0'/0/${addressIndex}`
     ).connect(provider);
 
     // Instantiate the InputBox contract
