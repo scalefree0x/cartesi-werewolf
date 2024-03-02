@@ -39,6 +39,10 @@ prompt-1     | Press Ctrl+C to stop the node
 The frontend `client.py` application uses [frontend-console](../frontend-console) to interact with the DApp. Open up six terminals, each mimics a player. In each terminal, run (accountIndex goes from 0 to 5):
 
 ```shell
+cd werewolf/
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
 python3 -m werewolf.client [accountIndex]
 ```
 
