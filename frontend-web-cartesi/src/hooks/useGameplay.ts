@@ -10,6 +10,7 @@ export const useGameplay = () => {
 
   // establish a read "stream" for inspections
   useEffect(() => {
+    
     const intervalId = setInterval(() => {
       // constantly obtain and update the redux app state
       inspect({ url: 'http://localhost:8080/inspect', payload: "" }).then((_dapp_state: any) => {
@@ -40,53 +41,53 @@ export const useGameplay = () => {
   }, [wallet, queue]);
 
 
-  useEffect(() => {
-    const player_address = wallet.character;
-    const player_index = Object.keys(dapp_state._players).findIndex((key) => key === player_address);
-    /**
-     * Get Player from players list using the wallet address
-     * 
-     */
+  // useEffect(() => {
+  //   const player_address = wallet.character;
+  //   const player_index = Object.keys(dapp_state._players).findIndex((key) => key === player_address);
+  //   /**
+  //    * Get Player from players list using the wallet address
+  //    * 
+  //    */
 
-    // establish the network
-    // establish rsa newkeys
-    // establish the public key to join the game!
-    if (dapp_state.moderator) {
-      const list_of_all = Object.keys(dapp_state._players);
-      const list_of_others = Object.keys(dapp_state._players);
-      const index_of_moderator = list_of_others.indexOf(dapp_state._moderator);
-      list_of_others.splice(index_of_moderator, 1);
+  //   // establish the network
+  //   // establish rsa newkeys
+  //   // establish the public key to join the game!
+  //   if (dapp_state.moderator) {
+  //     const list_of_all = Object.keys(dapp_state._players);
+  //     const list_of_others = Object.keys(dapp_state._players);
+  //     const index_of_moderator = list_of_others.indexOf(dapp_state._moderator);
+  //     list_of_others.splice(index_of_moderator, 1);
 
-      const werewolf_index = Math.floor(Math.random() * (list_of_others.length - 0 + 1)) + 0;
-      const werewolf_key = list_of_others[werewolf_index];
+  //     const werewolf_index = Math.floor(Math.random() * (list_of_others.length - 0 + 1)) + 0;
+  //     const werewolf_key = list_of_others[werewolf_index];
 
-      const encrypted_roles: any = {};
-      for (let i = 0; i < list_of_all.length; i++) {
-        const player = list_of_all[i];
-        if (player == dapp_state._moderator) {
-          continue;
-        }
-        else if (player === werewolf_key) {
-          encrypted_roles[player] = rsaEncrypt("WEREWOLF", werewolf_key);
-        }
-        else {
-          encrypted_roles[player] = rsaEncrypt("VILLAGER", werewolf_key);
-        }
-      }
+  //     const encrypted_roles: any = {};
+  //     for (let i = 0; i < list_of_all.length; i++) {
+  //       const player = list_of_all[i];
+  //       if (player == dapp_state._moderator) {
+  //         continue;
+  //       }
+  //       else if (player === werewolf_key) {
+  //         encrypted_roles[player] = rsaEncrypt("WEREWOLF", werewolf_key);
+  //       }
+  //       else {
+  //         encrypted_roles[player] = rsaEncrypt("VILLAGER", werewolf_key);
+  //       }
+  //     }
 
-      const stringified_encrypted_roles = JSON.stringify(encrypted_roles);
-      post(bufferToHex(stringified_encrypted_roles), index_of_moderator);
+  //     const stringified_encrypted_roles = JSON.stringify(encrypted_roles);
+  //     post(bufferToHex(stringified_encrypted_roles), index_of_moderator);
 
-    } else {
-      const encrypted_role = dapp_state._players[player_address].encrypted_role;
-      const role = rsaDecrypt(encrypted_role, privateKey)
+  //   } else {
+  //     const encrypted_role = dapp_state._players[player_address].encrypted_role;
+  //     const role = rsaDecrypt(encrypted_role, privateKey)
 
-    }
+  //   }
 
-    // moderator?
+  //   // moderator?
 
-    // randomly assign roles
-  }, [dapp_state, wallet]);
+  //   // randomly assign roles
+  // }, [dapp_state, wallet]);
 
 
   //   setPlayers(
